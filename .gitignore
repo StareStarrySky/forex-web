@@ -1,0 +1,13 @@
+build/
+node_modules/
+package-lock.json
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### VS Code ###
+.vscode/
