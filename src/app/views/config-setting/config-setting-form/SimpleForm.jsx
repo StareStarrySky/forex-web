@@ -16,6 +16,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator'
 import { getConfigSetting, saveConfigSetting } from 'app/redux/actions/ConfigSettingAction'
+import ConfirmationDialog from 'app/components/ConfirmationDialog/ConfirmationDialog'
 import PropTypes from 'prop-types'
 
 const TextField = styled(TextValidator)(() => ({
@@ -186,7 +187,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
     >
       {passagewayList.map((passageway, index) => {
         return (
-          <Box key={index}>
+          <Box key={index} sx={{ marginBottom: '10px' }}>
             <Button
               color="error"
               variant="outlined"
@@ -223,6 +224,7 @@ PassagewaysFormItem.propTypes = {
 let configSettingListLoaded = false
 
 const SimpleForm = () => {
+  const [openDialog, setOpenDialog] = useState(false)
   const [formItem, setFormItem] = useState({
     instrument: {
       name: ''
@@ -259,13 +261,14 @@ const SimpleForm = () => {
 
   const handleSubmit = () => {
     dispatch(saveConfigSetting(form))
+    setOpenDialog(true)
   }
 
   const handleChange = (event, index) => {
     // event.persist()
     const feild = event.target
     const newFormItem = {
-      ...formItem,
+      ...form[index],
       [feild.name]:
         feild.type === 'checkbox'
           ? feild.checked
@@ -382,6 +385,11 @@ const SimpleForm = () => {
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
       </ValidatorForm>
+      <ConfirmationDialog
+        open={openDialog}
+        text="success"
+        onYesClick={() => setOpenDialog(false)}
+      />
     </div>
   )
 }
