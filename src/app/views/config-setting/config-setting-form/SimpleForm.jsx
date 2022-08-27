@@ -150,8 +150,8 @@ PassagewayFormItem.propTypes = {
 const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
   const [passagewayList, setPassagewayList] = useState(passageways)
 
-  const handleAdd = (event) => {
-    passagewayList.push({ top: 0, bottom: 0 })
+  const handleAdd = (event, index) => {
+    passagewayList.splice(index + 1, 0, { top: 0, bottom: 0 })
     setPassagewayList(passagewayList)
 
     onChange?.({
@@ -203,13 +203,20 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
               passageways={passagewayList}
               onChange={onChange}
             />
+            <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, index)}>
+              <Icon>add</Icon>
+            </Button>
           </Box>
         )
       })}
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={(event) => handleAdd(event, passagewayList.length - 1)}
+      >
+        <Icon>add</Icon>
+      </Button>
       <Box>
-        <Button color="primary" variant="outlined" onClick={handleAdd}>
-          <Icon>add</Icon>
-        </Button>
         <Chip label={passagewayList.length} />
       </Box>
     </Box>
@@ -227,7 +234,7 @@ const SimpleForm = () => {
   const [openDialog, setOpenDialog] = useState(false)
   const [formItem, setFormItem] = useState({
     instrument: {
-      name: ''
+      name: 'GBPJPY'
     },
     canTrade: true,
     fuse: 4,
