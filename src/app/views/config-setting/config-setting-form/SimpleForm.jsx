@@ -185,9 +185,12 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
         padding: '5px'
       }}
     >
+      <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, 0)}>
+        <Icon>add</Icon>
+      </Button>
       {passagewayList.map((passageway, index) => {
         return (
-          <Box key={index} sx={{ marginBottom: '10px' }}>
+          <Box key={index} sx={{ marginTop: '10px', marginBottom: '10px' }}>
             <Button
               color="error"
               variant="outlined"
@@ -209,13 +212,6 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
           </Box>
         )
       })}
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={(event) => handleAdd(event, passagewayList.length - 1)}
-      >
-        <Icon>add</Icon>
-      </Button>
       <Box>
         <Chip label={passagewayList.length} />
       </Box>
@@ -231,8 +227,7 @@ PassagewaysFormItem.propTypes = {
 let configSettingListLoaded = false
 
 const SimpleForm = () => {
-  const [openDialog, setOpenDialog] = useState(false)
-  const [formItem, setFormItem] = useState({
+  const formItemInit = {
     instrument: {
       name: 'GBPJPY'
     },
@@ -251,7 +246,9 @@ const SimpleForm = () => {
       top: 0,
       bottom: 0
     }
-  })
+  }
+  const [openDialog, setOpenDialog] = useState(false)
+  const [formItem, setFormItem] = useState(formItemInit)
 
   const configSettingList = useSelector((state) => state.configSetting)
   const [form, setForm] = useState([])
@@ -289,13 +286,13 @@ const SimpleForm = () => {
   }
 
   const addFormItem = () => {
-    setFormItem({ ...formItem })
-    form.push(formItem)
+    setFormItem(formItemInit)
+    form.push(formItemInit)
     setForm(form)
   }
 
   const removeFormItem = (index) => {
-    setFormItem({ ...formItem })
+    setFormItem(formItemInit)
     form.splice(index, 1)
     setForm(form)
   }
