@@ -11,13 +11,12 @@ export const navigations = [
   {
     name: 'ConfigSetting',
     icon: 'attach_money',
-    children: [
-      {
-        name: 'ConfigSettingForm',
-        path: '/config-setting/form',
-        iconText: 'E'
-      }
-    ]
+    path: '/config-setting/form'
+  },
+  {
+    name: 'OpenOrder',
+    icon: 'attach_money',
+    path: '/open-order/table'
   },
   {
     label: 'PAGES',

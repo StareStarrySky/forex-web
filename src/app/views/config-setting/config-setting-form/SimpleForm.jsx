@@ -185,7 +185,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
         padding: '5px'
       }}
     >
-      <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, 0)}>
+      <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, -1)}>
         <Icon>add</Icon>
       </Button>
       {passagewayList.map((passageway, index) => {
@@ -303,73 +303,75 @@ const SimpleForm = () => {
         <Grid container spacing={12}>
           {form.map((configSetting, index) => {
             return (
-              <Grid item lg={3} md={3} sm={12} xs={12} sx={{ mt: 2 }} key={index}>
-                <Button color="error" variant="outlined" onClick={() => removeFormItem(index)}>
-                  <Icon>remove</Icon>
-                </Button>
-                <SimpleCard title={configSetting.instrument.name}>
-                  <InstrumentFormItem
-                    name="instrument"
-                    instrument={configSetting.instrument}
-                    onChange={(event) => handleChange(event, index)}
-                  />
-                  <FormControl>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={configSetting.canTrade}
-                          onChange={(event) => handleChange(event, index)}
-                          name="canTrade"
-                        />
-                      }
-                      label="canTrade"
-                      labelPlacement="start"
+              <Grid item lg={3} md={3} sm={12} xs={12} key={index}>
+                <Grid>
+                  <Button color="error" variant="outlined" onClick={() => removeFormItem(index)}>
+                    <Icon>remove</Icon>
+                  </Button>
+                  <SimpleCard title={configSetting.instrument.name}>
+                    <InstrumentFormItem
+                      name="instrument"
+                      instrument={configSetting.instrument}
+                      onChange={(event) => handleChange(event, index)}
                     />
-                  </FormControl>
-                  <TextField
-                    label="fuse"
-                    onChange={(event) => handleChange(event, index)}
-                    type="number"
-                    name="fuse"
-                    value={configSetting.fuse || 0}
-                  />
-                  <TextField
-                    label="curFuse"
-                    onChange={(event) => handleChange(event, index)}
-                    type="number"
-                    name="curFuse"
-                    value={configSetting.curFuse || 0}
-                  />
-                  <TextField
-                    label="bufferRandom"
-                    onChange={(event) => handleChange(event, index)}
-                    type="number"
-                    name="bufferRandom"
-                    value={configSetting.bufferRandom || 0}
-                  />
-                  <TextField
-                    label="tradeAmount"
-                    onChange={(event) => handleChange(event, index)}
-                    type="number"
-                    name="tradeAmount"
-                    value={configSetting.tradeAmount || 0}
-                    inputProps={{ step: 0.001 }}
-                  />
-                  <PassagewaysFormItem
-                    name="passageways"
-                    passageways={configSetting.passageways}
-                    onChange={(event) => handleChange(event, index)}
-                  />
-                  <PassagewayFormItem
-                    name="curPassageway"
-                    passageway={configSetting.curPassageway}
-                    onChange={(event) => handleChange(event, index)}
-                  />
-                </SimpleCard>
+                    <FormControl>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={configSetting.canTrade}
+                            onChange={(event) => handleChange(event, index)}
+                            name="canTrade"
+                          />
+                        }
+                        label="canTrade"
+                        labelPlacement="start"
+                      />
+                    </FormControl>
+                    <TextField
+                      label="fuse"
+                      onChange={(event) => handleChange(event, index)}
+                      type="number"
+                      name="fuse"
+                      value={configSetting.fuse || 0}
+                    />
+                    <TextField
+                      label="curFuse"
+                      onChange={(event) => handleChange(event, index)}
+                      type="number"
+                      name="curFuse"
+                      value={configSetting.curFuse || 0}
+                    />
+                    <TextField
+                      label="bufferRandom"
+                      onChange={(event) => handleChange(event, index)}
+                      type="number"
+                      name="bufferRandom"
+                      value={configSetting.bufferRandom || 0}
+                    />
+                    <TextField
+                      label="tradeAmount"
+                      onChange={(event) => handleChange(event, index)}
+                      type="number"
+                      name="tradeAmount"
+                      value={configSetting.tradeAmount || 0}
+                      inputProps={{ step: 0.001 }}
+                    />
+                    <PassagewaysFormItem
+                      name="passageways"
+                      passageways={configSetting.passageways}
+                      onChange={(event) => handleChange(event, index)}
+                    />
+                    <PassagewayFormItem
+                      name="curPassageway"
+                      passageway={configSetting.curPassageway}
+                      onChange={(event) => handleChange(event, index)}
+                    />
+                  </SimpleCard>
+                </Grid>
               </Grid>
             )
           })}
-          <Grid item lg={3} md={3} sm={12} xs={12} sx={{ mt: 2 }}>
+          <Grid item lg={3} md={3} sm={12} xs={12}>
             <SimpleCard title="NEW">
               <Grid
                 container
@@ -393,6 +395,7 @@ const SimpleForm = () => {
         open={openDialog}
         text="success"
         onYesClick={() => setOpenDialog(false)}
+        onConfirmDialogClose={() => setOpenDialog(false)}
       />
     </div>
   )

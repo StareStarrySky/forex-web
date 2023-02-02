@@ -5,6 +5,7 @@ import materialRoutes from 'app/views/material-kit/MaterialRoutes'
 import dashboardRoutes from 'app/views/dashboard/DashboardRoutes'
 import sessionRoutes from 'app/views/sessions/SessionRoutes'
 import configSettingRoutes from 'app/views/config-setting/ConfigSettingRoutes'
+import openOrderRoutes from 'app/views/open-order/OpenOrderRoutes'
 import MatxLayout from '../components/MatxLayout/MatxLayout'
 import { Navigate } from 'react-router-dom'
 
@@ -16,7 +17,13 @@ export const AllPages = () => {
           <MatxLayout />
         </AuthGuard>
       ),
-      children: [...dashboardRoutes, ...configSettingRoutes, ...chartsRoute, ...materialRoutes]
+      children: [
+        ...dashboardRoutes,
+        ...configSettingRoutes,
+        ...openOrderRoutes,
+        ...chartsRoute,
+        ...materialRoutes
+      ]
     },
     ...sessionRoutes,
     {

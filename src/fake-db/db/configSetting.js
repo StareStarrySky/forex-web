@@ -33,11 +33,11 @@ const configSettingDB = {
   ]
 }
 
-Mock.onGet('/api/config-setting').reply(() => {
+Mock.onGet('/config-setting').reply(() => {
   return [200, configSettingDB.configSetting]
 })
 
-Mock.onPut('/api/config-setting').reply((config) => {
+Mock.onPut('/config-setting').reply((config) => {
   configSettingDB.configSetting = JSON.parse(config.data)
   return [200, configSettingDB.configSetting]
 })
