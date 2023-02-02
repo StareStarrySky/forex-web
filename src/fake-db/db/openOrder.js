@@ -34,16 +34,16 @@ const openOrderDB = {
   }
 }
 
-Mock.onGet('/open-order').reply(() => {
+Mock.onGet('/api/open-order').reply(() => {
   return [200, openOrderDB.openOrder]
 })
 
-Mock.onDelete(pathToRegexp('/open-order/:orderId')).reply((orderId) => {
+Mock.onDelete(pathToRegexp('/api/open-order/:orderId')).reply((orderId) => {
   openOrderDB.openOrder.orders.splice(0, 1)
   return [200, openOrderDB.openOrder]
 })
 
-Mock.onPut(pathToRegexp('/open-order/:orderId/order-command')).reply((orderId) => {
+Mock.onPut(pathToRegexp('/api/open-order/:orderId/order-command')).reply((orderId) => {
   openOrderDB.openOrder.order.GBPJPY.orderCommand = 'SELL'
   return [200, openOrderDB.openOrder]
 })
