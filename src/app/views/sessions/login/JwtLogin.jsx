@@ -134,7 +134,7 @@ const JwtLogin = () => {
                           }
                         })
                       }
-                      checked={userInfo.agreement || true}
+                      checked={userInfo.agreement || false}
                     />
                   }
                   label="Remeber me"

@@ -166,12 +166,12 @@ const SimpleTable = () => {
 
   return (
     <Box width="100%" overflow="auto">
-      <StyledTable>
+      <StyledTable sx={{ minWidth: 900 }}>
         <TableHead>
           <TableRow>
             <TableCell>Label</TableCell>
             <TableCell>Instrument</TableCell>
-            <TableCell>Order Command</TableCell>
+            <TableCell>Command</TableCell>
             <TableCell>Open Price</TableCell>
             <TableCell>Amount</TableCell>
             <TableCell>Stop Loss</TableCell>
