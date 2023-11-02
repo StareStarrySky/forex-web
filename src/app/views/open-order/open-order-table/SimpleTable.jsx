@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableBody,
-  IconButton,
-  TableRow,
-  Chip
-} from '@mui/material'
+import { Table, TableHead, TableCell, TableBody, IconButton, TableRow, Chip } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -31,6 +22,26 @@ const OrderChip = styled(Chip)(({ isGreen }) => ({
   color: isGreen ? '#67c23a' : '#f56c6c',
   borderColor: isGreen ? '#67c23a' : '#f56c6c',
   backgroundColor: isGreen ? '#f0f9eb' : '#fef0f0'
+}))
+
+const StyledTable = styled(Table)(() => ({
+  whiteSpace: 'pre',
+  '& thead': {
+    '& tr': {
+      '& th': {
+        paddingLeft: 0,
+        paddingRight: 0
+      }
+    }
+  },
+  '& tbody': {
+    '& tr': {
+      '& td': {
+        paddingLeft: 0,
+        textTransform: 'capitalize'
+      }
+    }
+  }
 }))
 
 const SimpleTableBodyRow = ({
@@ -79,18 +90,20 @@ const SimpleTableBodyRow = ({
       <TableCell>{moment(order.fillTime).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
       <TableCell>
         <IconButton
+          size="small"
           color="warning"
           aria-label="swap order command"
           onClick={() => onChangeOrderCommandClick(order.id)}
         >
-          <SwapVertIcon />
+          <SwapVertIcon fontSize="inherit" />
         </IconButton>
         <IconButton
+          size="small"
           color="warning"
           aria-label="delete order"
           onClick={() => onCloseOrderClick(order.id)}
         >
-          <DeleteIcon />
+          <DeleteIcon fontSize="inherit" />
         </IconButton>
       </TableCell>
     </OrderTableRow>
@@ -153,44 +166,42 @@ const SimpleTable = () => {
 
   return (
     <Box width="100%" overflow="auto">
-      <TableContainer>
-        <Table sx={{ width: { xs: 'auto', lg: '100%' } }}>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ minWidth: 50 }}>Label</TableCell>
-              <TableCell sx={{ minWidth: 70 }}>Instrument</TableCell>
-              <TableCell sx={{ minWidth: 100 }}>Order Command</TableCell>
-              <TableCell sx={{ minWidth: 85 }}>Open Price</TableCell>
-              <TableCell sx={{ minWidth: 50 }}>Amount</TableCell>
-              <TableCell sx={{ minWidth: 85 }}>Stop Loss</TableCell>
-              <TableCell sx={{ minWidth: 65 }}>Pips</TableCell>
-              <TableCell sx={{ minWidth: 70 }}>Currency</TableCell>
-              <TableCell sx={{ minWidth: 85 }}>Time</TableCell>
-              <TableCell sx={{ minWidth: 40 }}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {list.order &&
-              Object.values(list.order).map((order, index) => (
-                <SimpleTableBodyRow
-                  key={index}
-                  order={order}
-                  onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
-                  onCloseOrderClick={() => handleCloseOrder(order.id)}
-                />
-              ))}
-            {list.orders &&
-              list.orders.map((order, index) => (
-                <SimpleTableBodyRow
-                  key={index}
-                  order={order}
-                  onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
-                  onCloseOrderClick={() => handleCloseOrder(order.id)}
-                />
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <StyledTable>
+        <TableHead>
+          <TableRow>
+            <TableCell>Label</TableCell>
+            <TableCell>Instrument</TableCell>
+            <TableCell>Order Command</TableCell>
+            <TableCell>Open Price</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Stop Loss</TableCell>
+            <TableCell>Pips</TableCell>
+            <TableCell>Currency</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {list.order &&
+            Object.values(list.order).map((order, index) => (
+              <SimpleTableBodyRow
+                key={index}
+                order={order}
+                onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
+                onCloseOrderClick={() => handleCloseOrder(order.id)}
+              />
+            ))}
+          {list.orders &&
+            list.orders.map((order, index) => (
+              <SimpleTableBodyRow
+                key={index}
+                order={order}
+                onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
+                onCloseOrderClick={() => handleCloseOrder(order.id)}
+              />
+            ))}
+        </TableBody>
+      </StyledTable>
       <ConfirmationDialog
         open={openDialog}
         text="success"
