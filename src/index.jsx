@@ -1,23 +1,22 @@
 import React from 'react'
 import App from './app/App'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 // import * as serviceWorker from './serviceWorker'
 import { StyledEngineProvider } from '@mui/styled-engine'
 import { CssBaseline } from '@mui/material'
-import { version } from '../package.json'
+import pkg from '../package.json'
 
-document.ver = version
+document.ver = pkg.version
 
-ReactDOM.render(
+createRoot(document.getElementById('root')).render(
   <StyledEngineProvider injectFirst>
     <BrowserRouter>
       <CssBaseline />
       <App />
     </BrowserRouter>
-  </StyledEngineProvider>,
-  document.getElementById('root')
+  </StyledEngineProvider>
 )
 
 // for IE-11 support un-comment cssVars() and it's import in this file
