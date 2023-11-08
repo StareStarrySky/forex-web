@@ -15,7 +15,7 @@ const devServerConfig = () => config => {
         target: process.env.REACT_APP_SERVER_URL,
         changeOrigin: true,
         pathRewrite: {
-          [process.env.REACT_APP_BASE_API]: ''
+          [`^${process.env.REACT_APP_BASE_API}`]: ''
         }
       }
     }
