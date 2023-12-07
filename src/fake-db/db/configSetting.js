@@ -11,24 +11,8 @@ const configSettingDB = {
       curFuse: 0,
       bufferRandom: 8,
       tradeAmount: 0.001,
-      passageways: [
-        {
-          top: 166.1,
-          bottom: 165.9
-        },
-        {
-          top: 164.1,
-          bottom: 163.9
-        },
-        {
-          top: 162.1,
-          bottom: 161.9
-        }
-      ],
-      curPassageway: {
-        top: 162.1,
-        bottom: 161.9
-      }
+      passageways: [166.1, 164.1, 162.1],
+      curPassageway: 162.1
     }
   ]
 }

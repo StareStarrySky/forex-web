@@ -85,10 +85,7 @@ const PassagewayFormItem = ({
   let passagewayChange = () => {}
   if (name === 'curPassageway') {
     passagewayChange = (event) => {
-      const value =
-        event.target.name === 'top'
-          ? { top: event.target.valueAsNumber, bottom: passageway.bottom }
-          : { top: passageway.top, bottom: event.target.valueAsNumber }
+      const value = event.target.valueAsNumber
       onChange?.({
         ...event,
         target: {
@@ -99,10 +96,7 @@ const PassagewayFormItem = ({
     }
   } else if (name === 'passageways') {
     passagewayChange = (event) => {
-      passageways[index] =
-        event.target.name === 'top'
-          ? { top: event.target.valueAsNumber, bottom: passageway.bottom }
-          : { top: passageway.top, bottom: event.target.valueAsNumber }
+      passageways[index] = event.target.valueAsNumber
       onChange?.({
         ...event,
         target: {
@@ -114,34 +108,20 @@ const PassagewayFormItem = ({
   }
 
   return (
-    <Box
-      sx={{
-        border: 'solid 1px',
-        borderColor: 'primary.light',
-        borderRadius: '5px',
-        padding: '5px'
-      }}
-    >
+    <Box sx={{ padding: '5px' }}>
       <TextField
-        label={name + '-' + (index + 1) + '.top'}
+        label={name === 'passageways' ? name + '-' + (index + 1) : name}
         onChange={passagewayChange}
         type="number"
-        name="top"
-        value={passageway.top || 0}
-      />
-      <TextField
-        label={name + '-' + (index + 1) + '.bottom'}
-        onChange={passagewayChange}
-        type="number"
-        name="bottom"
-        value={passageway.bottom || 0}
+        name="passageway"
+        value={passageway || 0}
       />
     </Box>
   )
 }
 PassagewayFormItem.propTypes = {
   name: PropTypes.string.isRequired,
-  passageway: PropTypes.object.isRequired,
+  passageway: PropTypes.number.isRequired,
   passageways: PropTypes.array,
   index: PropTypes.number,
   onChange: PropTypes.func
@@ -151,7 +131,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
   const [passagewayList, setPassagewayList] = useState(passageways)
 
   const handleAdd = (event, index) => {
-    passagewayList.splice(index + 1, 0, { top: 0, bottom: 0 })
+    passagewayList.splice(index + 1, 0, 0)
     setPassagewayList(passagewayList)
 
     onChange?.({
@@ -236,16 +216,8 @@ const SimpleForm = () => {
     curFuse: 0,
     bufferRandom: 8,
     tradeAmount: 0.001,
-    passageways: [
-      {
-        top: 0,
-        bottom: 0
-      }
-    ],
-    curPassageway: {
-      top: 0,
-      bottom: 0
-    }
+    passageways: [0],
+    curPassageway: 0
   }
   const [openDialog, setOpenDialog] = useState(false)
   const [formItem, setFormItem] = useState(formItemInit)
