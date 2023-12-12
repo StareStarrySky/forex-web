@@ -1,12 +1,30 @@
 import React, { useState } from 'react'
-import { Table, TableHead, TableCell, TableBody, IconButton, TableRow, Chip } from '@mui/material'
+import {
+  Table,
+  TableHead,
+  TableCell,
+  TableBody,
+  IconButton,
+  TableRow,
+  Chip,
+  Button,
+  ButtonGroup
+} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import { Box, styled } from '@mui/system'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import SwapVertIcon from '@mui/icons-material/SwapVert'
 import DeleteIcon from '@mui/icons-material/Delete'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
 import { useSelector, useDispatch } from 'react-redux'
-import { getOrders, closeOrder, changeOrderCommand } from 'app/redux/actions/OpenOrderAction'
+import {
+  getOrders,
+  closeOrder,
+  changeOrderCommand,
+  createOrder
+} from 'app/redux/actions/OpenOrderAction'
 import { useEffect } from 'react'
 import { ConfirmationDialog } from 'app/components'
 
@@ -42,6 +60,10 @@ const StyledTable = styled(Table)(() => ({
       }
     }
   }
+}))
+
+const InstrumentButton = styled(Button)(() => ({
+  width: 120
 }))
 
 const SimpleTableBodyRow = ({
@@ -154,6 +176,11 @@ const SimpleTable = () => {
     setList(openOrder)
   }, [openOrder])
 
+  const handleCreateOrder = (instrument, orderCommand) => {
+    dispatch(createOrder(instrument, orderCommand))
+    setOpenDialog(true)
+  }
+
   const handleChangeOrderCommand = (orderId) => {
     dispatch(changeOrderCommand(orderId))
     setOpenDialog(true)
@@ -165,49 +192,113 @@ const SimpleTable = () => {
   }
 
   return (
-    <Box width="100%" overflow="auto">
-      <StyledTable sx={{ minWidth: 900 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Label</TableCell>
-            <TableCell>Instrument</TableCell>
-            <TableCell>Command</TableCell>
-            <TableCell>Open Price</TableCell>
-            <TableCell>Amount</TableCell>
-            <TableCell>Stop Loss</TableCell>
-            <TableCell>Pips</TableCell>
-            <TableCell>Currency</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {list.order &&
-            Object.values(list.order).map((order, index) => (
-              <SimpleTableBodyRow
-                key={index}
-                order={order}
-                onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
-                onCloseOrderClick={() => handleCloseOrder(order.id)}
-              />
-            ))}
-          {list.orders &&
-            list.orders.map((order, index) => (
-              <SimpleTableBodyRow
-                key={index}
-                order={order}
-                onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
-                onCloseOrderClick={() => handleCloseOrder(order.id)}
-              />
-            ))}
-        </TableBody>
-      </StyledTable>
-      <ConfirmationDialog
-        open={openDialog}
-        text="success"
-        onYesClick={() => setOpenDialog(false)}
-        onConfirmDialogClose={() => setOpenDialog(false)}
-      />
+    <Box>
+      <Grid container spacing={{ xs: 1, sm: 2 }}>
+        <Grid xs={12} sm={6} md={6} lg={4} xl={3}>
+          <ButtonGroup variant="contained">
+            <InstrumentButton
+              color="success"
+              variant="outlined"
+              onClick={() => handleCreateOrder('GBPJPY', 'BUY')}
+            >
+              <TrendingUpIcon />
+              GBP/JPY
+            </InstrumentButton>
+            <InstrumentButton
+              color="error"
+              variant="outlined"
+              onClick={() => handleCreateOrder('GBPJPY', 'SELL')}
+            >
+              <TrendingDownIcon />
+              GBP/JPY
+            </InstrumentButton>
+          </ButtonGroup>
+        </Grid>
+        <Grid xs={12} sm={6} md={6} lg={4} xl={3}>
+          <ButtonGroup variant="contained">
+            <InstrumentButton
+              color="success"
+              variant="outlined"
+              onClick={() => handleCreateOrder('GBPUSD', 'BUY')}
+            >
+              <TrendingUpIcon />
+              GBP/USD
+            </InstrumentButton>
+            <InstrumentButton
+              color="error"
+              variant="outlined"
+              onClick={() => handleCreateOrder('GBPUSD', 'SELL')}
+            >
+              <TrendingDownIcon />
+              GBP/USD
+            </InstrumentButton>
+          </ButtonGroup>
+        </Grid>
+        <Grid xs={12} sm={6} md={6} lg={4} xl={3}>
+          <ButtonGroup variant="contained">
+            <InstrumentButton
+              color="success"
+              variant="outlined"
+              onClick={() => handleCreateOrder('USDJPY', 'BUY')}
+            >
+              <TrendingUpIcon />
+              USD/JPY
+            </InstrumentButton>
+            <InstrumentButton
+              color="error"
+              variant="outlined"
+              onClick={() => handleCreateOrder('USDJPY', 'SELL')}
+            >
+              <TrendingDownIcon />
+              USD/JPY
+            </InstrumentButton>
+          </ButtonGroup>
+        </Grid>
+      </Grid>
+      <Box width="100%" overflow="auto">
+        <StyledTable sx={{ minWidth: 900 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Label</TableCell>
+              <TableCell>Instrument</TableCell>
+              <TableCell>Command</TableCell>
+              <TableCell>Open Price</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell>Stop Loss</TableCell>
+              <TableCell>Pips</TableCell>
+              <TableCell>Currency</TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.order &&
+              Object.values(list.order).map((order, index) => (
+                <SimpleTableBodyRow
+                  key={index}
+                  order={order}
+                  onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
+                  onCloseOrderClick={() => handleCloseOrder(order.id)}
+                />
+              ))}
+            {list.orders &&
+              list.orders.map((order, index) => (
+                <SimpleTableBodyRow
+                  key={index}
+                  order={order}
+                  onChangeOrderCommandClick={() => handleChangeOrderCommand(order.id)}
+                  onCloseOrderClick={() => handleCloseOrder(order.id)}
+                />
+              ))}
+          </TableBody>
+        </StyledTable>
+        <ConfirmationDialog
+          open={openDialog}
+          text="success"
+          onYesClick={() => setOpenDialog(false)}
+          onConfirmDialogClose={() => setOpenDialog(false)}
+        />
+      </Box>
     </Box>
   )
 }

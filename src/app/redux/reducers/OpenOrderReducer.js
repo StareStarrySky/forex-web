@@ -1,4 +1,9 @@
-import { OPENORDER_GET, OPENORDER_DELETE, OPENORDER_SWAP_COMMAND } from '../actions/OpenOrderAction'
+import {
+  OPENORDER_GET,
+  OPENORDER_DELETE,
+  OPENORDER_SWAP_COMMAND,
+  OPENORDER_CREATE
+} from '../actions/OpenOrderAction'
 
 const initialState = {}
 
@@ -17,6 +22,12 @@ const OpenOrderReducer = function (state = initialState, action) {
       }
     }
     case OPENORDER_SWAP_COMMAND: {
+      return {
+        ...state,
+        ...action.payload
+      }
+    }
+    case OPENORDER_CREATE: {
       return {
         ...state,
         ...action.payload
