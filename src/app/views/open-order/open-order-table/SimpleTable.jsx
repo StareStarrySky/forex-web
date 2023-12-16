@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Table,
   TableHead,
@@ -25,8 +25,7 @@ import {
   changeOrderCommand,
   createOrder
 } from 'app/redux/actions/OpenOrderAction'
-import { useEffect } from 'react'
-import { ConfirmationDialog } from 'app/components'
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 const OrderTableRow = styled(TableRow)(({ isGreen }) => ({
   backgroundColor: isGreen ? '#f0f9eb' : '#fef0f0'
@@ -161,7 +160,6 @@ const SimpleTable = () => {
     },
     orders: []
   }
-  const [openDialog, setOpenDialog] = useState(false)
   const [list, setList] = useState(listInit)
 
   const openOrder = useSelector((state) => state.openOrder)
@@ -178,17 +176,17 @@ const SimpleTable = () => {
 
   const handleCreateOrder = (instrument, orderCommand) => {
     dispatch(createOrder(instrument, orderCommand))
-    setOpenDialog(true)
+    enqueueSnackbar('success', { variant: 'success' })
   }
 
   const handleChangeOrderCommand = (orderId) => {
     dispatch(changeOrderCommand(orderId))
-    setOpenDialog(true)
+    enqueueSnackbar('success', { variant: 'success' })
   }
 
   const handleCloseOrder = (orderId) => {
     dispatch(closeOrder(orderId))
-    setOpenDialog(true)
+    enqueueSnackbar('success', { variant: 'success' })
   }
 
   return (
@@ -292,13 +290,8 @@ const SimpleTable = () => {
               ))}
           </TableBody>
         </StyledTable>
-        <ConfirmationDialog
-          open={openDialog}
-          text="success"
-          onYesClick={() => setOpenDialog(false)}
-          onConfirmDialogClose={() => setOpenDialog(false)}
-        />
       </Box>
+      <SnackbarProvider autoHideDuration={1000} />
     </Box>
   )
 }
