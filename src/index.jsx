@@ -7,8 +7,8 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css'
 import { StyledEngineProvider } from '@mui/styled-engine'
 import { CssBaseline } from '@mui/material'
 import pkg from '../package.json'
-
-document.ver = pkg.version
+import Push from 'push.js'
+import orderClient from 'stomp.js'
 
 createRoot(document.getElementById('root')).render(
   <StyledEngineProvider injectFirst>
@@ -26,3 +26,10 @@ createRoot(document.getElementById('root')).render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.register()
+
+document.ver = pkg.version
+
+if (!Push.Permission.has()) {
+  Push.Permission.request()
+}
+orderClient.activate()
