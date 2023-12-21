@@ -12,7 +12,8 @@ const orderClient = new Client({
         requireInteraction: true
       })
     })
-  }
+  },
+  connectionTimeout: 8000
 })
 
 export default orderClient

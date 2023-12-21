@@ -2,8 +2,13 @@ import React from 'react'
 import { styled } from '@mui/system'
 import { Dialog, Button } from '@mui/material'
 
-const DialogBox = styled('div')(() => ({
-  width: 360,
+const DialogBox = styled('div')(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    width: 290
+  },
+  [theme.breakpoints.up('sm')]: {
+    width: 360
+  },
   padding: '32px',
   textAlign: 'center',
   marginLeft: 'auto',

@@ -7,16 +7,18 @@ import {
   MenuItem,
   Switch,
   Box,
-  Chip
+  Chip,
+  Snackbar,
+  Alert
 } from '@mui/material'
 import { styled } from '@mui/system'
+import AutorenewIcon from '@mui/icons-material/Autorenew'
 import { Span } from 'app/components/Typography'
 import { SimpleCard } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator'
 import { getConfigSetting, saveConfigSetting } from 'app/redux/actions/ConfigSettingAction'
-import ConfirmationDialog from 'app/components/ConfirmationDialog/ConfirmationDialog'
 import PropTypes from 'prop-types'
 
 const TextField = styled(TextValidator)(() => ({
@@ -27,6 +29,12 @@ const TextField = styled(TextValidator)(() => ({
 const SelectField = styled(SelectValidator)(() => ({
   width: '100%',
   marginBottom: '16px'
+}))
+
+const CircularButton = styled(Button)(({ theme }) => ({
+  borderRadius: '50%',
+  width: theme.spacing(4),
+  minWidth: theme.spacing(4)
 }))
 
 const InstrumentFormItem = ({ name = '', instrument = {}, onChange }) => {
@@ -219,7 +227,8 @@ const SimpleForm = () => {
     passageways: [0],
     curPassageway: 0
   }
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const openSnackbarTrigger = useRef(false)
   const [formItem, setFormItem] = useState(formItemInit)
 
   const configSettingList = useSelector((state) => state.configSetting)
@@ -233,11 +242,20 @@ const SimpleForm = () => {
 
   useEffect(() => {
     setForm(configSettingList)
+    if (openSnackbarTrigger.current) {
+      setOpenSnackbar(true)
+      openSnackbarTrigger.current = false
+    }
   }, [configSettingList])
+
+  const handleRenew = () => {
+    dispatch(getConfigSetting())
+    openSnackbarTrigger.current = true
+  }
 
   const handleSubmit = () => {
     dispatch(saveConfigSetting(form))
-    setOpenDialog(true)
+    openSnackbarTrigger.current = true
   }
 
   const handleChange = (event, index) => {
@@ -270,7 +288,18 @@ const SimpleForm = () => {
   }
 
   return (
-    <div>
+    <Box>
+      <Box marginBottom={'8px'}>
+        <CircularButton
+          variant="contained"
+          color="primary"
+          size="small"
+          aria-label="Renew"
+          onClick={() => handleRenew()}
+        >
+          <AutorenewIcon>renew</AutorenewIcon>
+        </CircularButton>
+      </Box>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={12}>
           {form.map((configSetting, index) => {
@@ -363,13 +392,15 @@ const SimpleForm = () => {
           <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
         </Button>
       </ValidatorForm>
-      <ConfirmationDialog
-        open={openDialog}
-        text="success"
-        onYesClick={() => setOpenDialog(false)}
-        onConfirmDialogClose={() => setOpenDialog(false)}
-      />
-    </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={openSnackbar}
+        autoHideDuration={1000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert severity="success">success</Alert>
+      </Snackbar>
+    </Box>
   )
 }
 

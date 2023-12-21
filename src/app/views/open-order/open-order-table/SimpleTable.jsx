@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Table,
   TableHead,
@@ -8,7 +8,9 @@ import {
   TableRow,
   Chip,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Snackbar,
+  Alert
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Box, styled } from '@mui/system'
@@ -18,6 +20,7 @@ import SwapVertIcon from '@mui/icons-material/SwapVert'
 import DeleteIcon from '@mui/icons-material/Delete'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import AutorenewIcon from '@mui/icons-material/Autorenew'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getOrders,
@@ -25,7 +28,6 @@ import {
   changeOrderCommand,
   createOrder
 } from 'app/redux/actions/OpenOrderAction'
-import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 const OrderTableRow = styled(TableRow)(({ isGreen }) => ({
   backgroundColor: isGreen ? '#f0f9eb' : '#fef0f0'
@@ -59,6 +61,12 @@ const StyledTable = styled(Table)(() => ({
       }
     }
   }
+}))
+
+const CircularButton = styled(Button)(({ theme }) => ({
+  borderRadius: '50%',
+  width: theme.spacing(4),
+  minWidth: theme.spacing(4)
 }))
 
 const InstrumentButton = styled(Button)(() => ({
@@ -160,6 +168,8 @@ const SimpleTable = () => {
     },
     orders: []
   }
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const openSnackbarTrigger = useRef(false)
   const [list, setList] = useState(listInit)
 
   const openOrder = useSelector((state) => state.openOrder)
@@ -172,25 +182,45 @@ const SimpleTable = () => {
 
   useEffect(() => {
     setList(openOrder)
+    if (openSnackbarTrigger.current) {
+      setOpenSnackbar(true)
+      openSnackbarTrigger.current = false
+    }
   }, [openOrder])
+
+  const handleRenew = () => {
+    dispatch(getOrders())
+    openSnackbarTrigger.current = true
+  }
 
   const handleCreateOrder = (instrument, orderCommand) => {
     dispatch(createOrder(instrument, orderCommand))
-    enqueueSnackbar('success', { variant: 'success' })
+    openSnackbarTrigger.current = true
   }
 
   const handleChangeOrderCommand = (orderId) => {
     dispatch(changeOrderCommand(orderId))
-    enqueueSnackbar('success', { variant: 'success' })
+    openSnackbarTrigger.current = true
   }
 
   const handleCloseOrder = (orderId) => {
     dispatch(closeOrder(orderId))
-    enqueueSnackbar('success', { variant: 'success' })
+    openSnackbarTrigger.current = true
   }
 
   return (
     <Box>
+      <Box marginBottom={'8px'}>
+        <CircularButton
+          variant="contained"
+          color="primary"
+          size="small"
+          aria-label="Renew"
+          onClick={() => handleRenew()}
+        >
+          <AutorenewIcon>renew</AutorenewIcon>
+        </CircularButton>
+      </Box>
       <Grid container spacing={{ xs: 1, sm: 2 }}>
         <Grid xs={12} sm={6} md={6} lg={4} xl={3}>
           <ButtonGroup variant="contained">
@@ -291,7 +321,14 @@ const SimpleTable = () => {
           </TableBody>
         </StyledTable>
       </Box>
-      <SnackbarProvider autoHideDuration={1000} />
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={openSnackbar}
+        autoHideDuration={1000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert severity="success">success</Alert>
+      </Snackbar>
     </Box>
   )
 }
