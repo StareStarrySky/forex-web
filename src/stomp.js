@@ -2,7 +2,12 @@ import { Client } from '@stomp/stompjs'
 import Push from 'push.js'
 
 const orderClient = new Client({
-  brokerURL: 'ws://' + window.location.host + process.env.REACT_APP_BASE_API + '/order',
+  brokerURL:
+    process.env.REACT_APP_STOMP_PROTOCOL +
+    '://' +
+    window.location.host +
+    process.env.REACT_APP_BASE_API +
+    '/order',
   onConnect: () => {
     orderClient.subscribe(process.env.REACT_APP_STOMP_BROKER + '/forex-web', (message) => {
       let stomp = JSON.parse(message.body)

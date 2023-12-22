@@ -48,7 +48,7 @@ Mock.onPut(pathToRegexp('/api/open-order/:orderId/order-command')).reply((orderI
   return [200, openOrderDB.openOrder]
 })
 
-Mock.onPost(pathToRegexp('/open-order/:instrument/:orderCommand')).reply(
+Mock.onPost(pathToRegexp('/api/open-order/:instrument/:orderCommand')).reply(
   (instrument, orderCommand) => {
     openOrderDB.openOrder.orders.push(openOrderDB.openOrder.order.GBPJPY)
     return [200, openOrderDB.openOrder]
