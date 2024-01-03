@@ -136,30 +136,26 @@ PassagewayFormItem.propTypes = {
 }
 
 const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
-  const [passagewayList, setPassagewayList] = useState(passageways)
-
   const handleAdd = (event, index) => {
-    passagewayList.splice(index + 1, 0, 0)
-    setPassagewayList(passagewayList)
+    passageways.splice(index + 1, 0, 0)
 
     onChange?.({
       ...event,
       target: {
         name,
-        value: passagewayList
+        value: passageways
       }
     })
   }
 
   const handleRemove = (event, index) => {
-    passagewayList.splice(index, 1)
-    setPassagewayList(passagewayList)
+    passageways.splice(index, 1)
 
     onChange?.({
       ...event,
       target: {
         name,
-        value: passagewayList
+        value: passageways
       }
     })
   }
@@ -176,7 +172,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
       <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, -1)}>
         <Icon>add</Icon>
       </Button>
-      {passagewayList.map((passageway, index) => {
+      {passageways.map((passageway, index) => {
         return (
           <Box key={index} sx={{ marginTop: '10px', marginBottom: '10px' }}>
             <Button
@@ -191,7 +187,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
               otherName={'-' + index}
               index={index}
               passageway={passageway}
-              passageways={passagewayList}
+              passageways={passageways}
               onChange={onChange}
             />
             <Button color="primary" variant="outlined" onClick={(event) => handleAdd(event, index)}>
@@ -201,7 +197,7 @@ const PassagewaysFormItem = ({ name = '', passageways = [], onChange }) => {
         )
       })}
       <Box>
-        <Chip label={passagewayList.length} />
+        <Chip label={passageways.length} />
       </Box>
     </Box>
   )
