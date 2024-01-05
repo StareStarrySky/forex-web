@@ -7,8 +7,6 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css'
 import { StyledEngineProvider } from '@mui/styled-engine'
 import { CssBaseline } from '@mui/material'
 import pkg from '../package.json'
-import Push from 'push.js'
-import orderClient from 'stomp.js'
 
 createRoot(document.getElementById('root')).render(
   <StyledEngineProvider injectFirst>
@@ -28,8 +26,3 @@ createRoot(document.getElementById('root')).render(
 // serviceWorker.register()
 
 document.ver = pkg.version
-
-if (!Push.Permission.has()) {
-  Push.Permission.request()
-}
-orderClient.activate()

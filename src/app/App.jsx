@@ -7,6 +7,7 @@ import { MatxTheme } from 'app/components'
 import { useRoutes } from 'react-router-dom'
 import { AuthProvider } from 'app/contexts/JWTAuthContext'
 import { SettingsProvider } from 'app/contexts/SettingsContext'
+import { StompProvider } from './contexts/StompContext'
 
 const App = () => {
   const all_pages = useRoutes(AllPages())
@@ -15,7 +16,9 @@ const App = () => {
     <Provider store={Store}>
       <SettingsProvider>
         <MatxTheme>
-          <AuthProvider>{all_pages}</AuthProvider>
+          <AuthProvider>
+            <StompProvider>{all_pages}</StompProvider>
+          </AuthProvider>
         </MatxTheme>
       </SettingsProvider>
     </Provider>

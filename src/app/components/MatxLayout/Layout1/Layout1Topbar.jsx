@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'
 import useSettings from 'app/hooks/useSettings'
@@ -9,8 +9,9 @@ import ShoppingCart from '../../ShoppingCart/ShoppingCart'
 import NotificationBar from '../../NotificationBar/NotificationBar'
 import { themeShadows } from 'app/components/MatxTheme/themeColors'
 import { NotificationProvider } from 'app/contexts/NotificationContext'
-import { Icon, IconButton, MenuItem, Avatar, useMediaQuery, Hidden } from '@mui/material'
+import { Icon, IconButton, MenuItem, Avatar, useMediaQuery, Hidden, Badge } from '@mui/material'
 import { topBarHeight } from 'app/utils/constant'
+import useStomp from 'app/hooks/useStomp'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary
@@ -77,11 +78,31 @@ const IconBox = styled('div')(({ theme }) => ({
   }
 }))
 
+let stompActivated = false
+
 const Layout1Topbar = () => {
   const theme = useTheme()
   const { settings, updateSettings } = useSettings()
   const { logout, user } = useAuth()
   const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+  const { clientStatus, clientActivate, clientCallback } = useStomp()
+  const [onlineBadgeColor, setOnlineBadgeColor] = useState('default')
+  if (!stompActivated) {
+    clientActivate()
+    stompActivated = true
+  }
+  useEffect(() => {
+    if (clientStatus) {
+      clientCallback({
+        connected: () => setOnlineBadgeColor('success'),
+        message: () => setOnlineBadgeColor('secondary'),
+        msgError: () => setOnlineBadgeColor('warning'),
+        disconnected: () => setOnlineBadgeColor('error'),
+        defaultCall: () => setOnlineBadgeColor('default')
+      })
+    }
+  }, [clientStatus, clientCallback])
 
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({
@@ -142,7 +163,16 @@ const Layout1Topbar = () => {
                     Hi <strong>{user.name}</strong>
                   </Span>
                 </Hidden>
-                <Avatar src={user.avatar} sx={{ cursor: 'pointer' }} />
+                <Badge
+                  variant="dot"
+                  color={onlineBadgeColor}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                  }}
+                >
+                  <Avatar src={user.avatar} sx={{ cursor: 'pointer' }} />
+                </Badge>
               </UserMenu>
             }
           >
