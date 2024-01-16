@@ -1,6 +1,6 @@
 {
   "name": "forex-web",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "private": true,
   "scripts": {
     "start": "react-app-rewired start",
@@ -16,7 +16,7 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/lab": "^5.0.0-alpha.151",
     "@mui/material": "^5.14.16",
-    "@stomp/stompjs": "^7.0.0",
+    "@stomp/stompjs": "git+ssh://git@github.com:StareStarrySky/stompjs.git#7.0.0.0-beta.1",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^0.27.2",
     "babel-polyfill": "^6.26.0",

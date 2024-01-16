@@ -95,10 +95,12 @@ const Layout1Topbar = () => {
   useEffect(() => {
     if (clientStatus) {
       clientCallback({
-        connected: () => setOnlineBadgeColor('success'),
+        connected: () => setOnlineBadgeColor('info'),
         message: () => setOnlineBadgeColor('secondary'),
         msgError: () => setOnlineBadgeColor('warning'),
         disconnected: () => setOnlineBadgeColor('error'),
+        heartbeatIn: () => setOnlineBadgeColor('success'),
+        heartbeatOut: () => setOnlineBadgeColor('primary'),
         defaultCall: () => setOnlineBadgeColor('default')
       })
     }

@@ -6,6 +6,8 @@ export const STOMP_CONNECTED = 'STOMP_CONNECTED'
 export const STOMP_MESSAGE = 'STOMP_MESSAGE'
 export const STOMP_MSGERROR = 'STOMP_MSGERROR'
 export const STOMP_DISCONNECTED = 'STOMP_DISCONNECTED'
+export const STOMP_HEARTBEAT_IN = 'STOMP_HEARTBEAT_IN'
+export const STOMP_HEARTBEAT_OUT = 'STOMP_HEARTBEAT_OUT'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +30,18 @@ const reducer = (state, action) => {
       }
     }
     case STOMP_DISCONNECTED: {
+      return {
+        ...state,
+        status: action.payload
+      }
+    }
+    case STOMP_HEARTBEAT_IN: {
+      return {
+        ...state,
+        status: action.payload
+      }
+    }
+    case STOMP_HEARTBEAT_OUT: {
       return {
         ...state,
         status: action.payload
@@ -79,6 +93,12 @@ export const StompProvider = ({ children }) => {
       },
       onStompError: () => {
         dispatch({ type: STOMP_MSGERROR, payload: STOMP_MSGERROR })
+      },
+      onHeartbeatIn: () => {
+        dispatch({ type: STOMP_HEARTBEAT_IN, payload: STOMP_HEARTBEAT_IN })
+      },
+      onHeartbeatOut: () => {
+        dispatch({ type: STOMP_HEARTBEAT_OUT, payload: STOMP_HEARTBEAT_OUT })
       }
     })
     return () => {
@@ -94,7 +114,15 @@ export const StompProvider = ({ children }) => {
     }
   }
 
-  const clientCallback = ({ connected, message, msgError, disconnected, defaultCall }) => {
+  const clientCallback = ({
+    connected = () => {},
+    message = () => {},
+    msgError = () => {},
+    disconnected = () => {},
+    heartbeatIn = () => {},
+    heartbeatOut = () => {},
+    defaultCall = () => {}
+  }) => {
     switch (state.status) {
       case STOMP_CONNECTED:
         connected()
@@ -107,6 +135,12 @@ export const StompProvider = ({ children }) => {
         break
       case STOMP_DISCONNECTED:
         disconnected()
+        break
+      case STOMP_HEARTBEAT_IN:
+        heartbeatIn()
+        break
+      case STOMP_HEARTBEAT_OUT:
+        heartbeatOut()
         break
       default:
         defaultCall()
