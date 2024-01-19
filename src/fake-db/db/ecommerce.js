@@ -230,22 +230,22 @@ const EcommerceDB = {
     {
       uid: 'PPFDrVGsojfZoDxeYLMdIAWxSzd2',
       list: [
-        {
-          productId: '323sa680b32497dsfdsgga21rt47',
-          amount: 1
-        },
-        {
-          productId: '323sa680b324976dfgga21rt47',
-          amount: 1
-        },
-        {
-          productId: '323sa680bdf4976dfgga21rt4',
-          amount: 1
-        },
-        {
-          productId: '333sa680bdf4976dfgga21rt4',
-          amount: 1
-        }
+        // {
+        //   productId: '323sa680b32497dsfdsgga21rt47',
+        //   amount: 1
+        // },
+        // {
+        //   productId: '323sa680b324976dfgga21rt47',
+        //   amount: 1
+        // },
+        // {
+        //   productId: '323sa680bdf4976dfgga21rt4',
+        //   amount: 1
+        // },
+        // {
+        //   productId: '333sa680bdf4976dfgga21rt4',
+        //   amount: 1
+        // }
       ]
     }
   ],
